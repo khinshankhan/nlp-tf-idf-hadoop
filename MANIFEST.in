@@ -1,0 +1,6 @@
+include LICENSE
+include MANIFEST.in
+include versioneer.py
+
+graft nlp_tf_idf_hadoop
+global-exclude *.py[cod] __pycache__ *.so
