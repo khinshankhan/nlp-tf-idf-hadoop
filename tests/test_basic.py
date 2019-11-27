@@ -1,6 +1,5 @@
-def func(x):
-    return x + 1
+from nlp_tf_idf_hadoop import nlp_tf_idf_hadoop
 
-
-def test_answer():
-    assert func(4) == 5
+class TestClass:
+    def test_one(self):
+        assert nlp_tf_idf_hadoop.f("woo") == "woo"
