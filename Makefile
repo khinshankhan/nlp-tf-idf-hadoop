@@ -1,5 +1,5 @@
 ARGS?=data/sample.txt
-.PHONY: default init tests clean
+.PHONY: default init clean
 
 default:
 	@python nlp_tf_idf_hadoop ${ARGS}
@@ -7,9 +7,5 @@ default:
 init:
 	pip install -r requirements.txt
 
-tests:
-	pytest
-
 clean:
 	rm -rf */__pycache__
-	rm -rf .pytest_cache
