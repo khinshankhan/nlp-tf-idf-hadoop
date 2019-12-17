@@ -1,3 +1,4 @@
+ARGS?=data/sample.txt
 .PHONY: default init tests clean
 
 default:
