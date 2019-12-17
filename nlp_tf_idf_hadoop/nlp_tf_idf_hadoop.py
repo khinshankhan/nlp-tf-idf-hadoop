@@ -4,12 +4,12 @@ NLP analysis of Term Frequency - Inverse Document Frequency using Hadoop
 Handles the primary functions
 """
 
-def f(x):
-    return x
-
-def w(x):
-    m = f(x)
-    print(m)
+import pyspark
+sc = pyspark.SparkContext('local', 'nlp_tf_idf')
 
 def main(filename):
-    w(filename)
+    print(f'Reading from file: {filename}')
+    txt = sc.textFile(filename)
+    print(f'Lines in text: {txt.count()}')
+    words = txt.flatMap(lambda line: line.split())
+    print(f'Words in text: {words.count()}')
