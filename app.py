@@ -27,14 +27,16 @@ def doc_to_words(doc):
     return ret
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 3:
         print('Invalid number of arguments, program expects only filename '
-              'relative to `data` directory to analyze.')
+              'relative to `data` directory to analyze and query term.')
         exit(0)
 
     filename = sys.argv[1]
-    QUERY = "gene_egfr+_gene"
+    QUERY = sys.argv[2]
     output = open('output', 'w')
+
+    output.write(f'Query: {QUERY}\n')
 
     txt = sc.textFile(filename)
     docs = txt.map(txt_to_doc)

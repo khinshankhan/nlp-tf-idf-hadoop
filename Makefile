@@ -1,10 +1,13 @@
-ARGS?=data/sample.txt
 .PHONY: default init clean
 
 default:
 	@echo "Running spark-submit..."
+ifdef ARGS
 	@spark-submit app.py ${ARGS} &> /dev/null
-	@echo "Output:"
+else
+	@spark-submit app.py data/sample.txt gene_egfr+_gene &> /dev/null
+endif
+	@echo "OUTPUT:"
 	@cat output
 
 clean:
