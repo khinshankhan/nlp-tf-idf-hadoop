@@ -11,12 +11,13 @@ import pyspark
 
 sc = pyspark.SparkContext('local[*]', 'nlp_tf_idf')
 
-gene_or_dis = re.compile('^(dis|gene)_[^ ]+_\\1$')
+DIS_REGEX = re.compile('^(dis)_[^ ]+_\\1$')
+QUERY = ""
 
 def txt_to_doc(txt):
     splitted = txt.split()
     # return (docid, words)
-    return splitted[0], [w for w in splitted[1:] if gene_or_dis.match(w)]
+    return splitted[0], [w for w in splitted[1:] if DIS_REGEX.match(w) or w == QUERY]
 
 def doc_to_words(doc):
     words = doc[1]
@@ -33,6 +34,7 @@ if __name__ == '__main__':
         exit(0)
 
     filename = sys.argv[1]
+
     QUERY = sys.argv[2]
     output = open('output', 'w')
 
