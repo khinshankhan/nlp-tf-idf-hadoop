@@ -56,4 +56,8 @@ if __name__ == '__main__':
     tf_idf_merged = tf_idf.map(lambda word: (word[0], [(i[0], word[1][0] * i[1]) for i in word[1][1]]))
     tf_idf_merged.saveAsTextFile('tf_idf')
 
+    sorted_tf_idf = tf_idf_merged.sortByKey()
+    q_term = sorted_tf_idf.lookup(QUERY)[0]
+    # DEBUG: print("HERE", q_term)
+
     output.close()
