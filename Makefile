@@ -2,10 +2,10 @@ ARGS?=data/sample.txt
 .PHONY: default init clean
 
 default:
-	@python app.py ${ARGS}
-
-init:
-	pip install -r requirements.txt
+	@echo "Running spark-submit..."
+	@spark-submit app.py ${ARGS} &> /dev/null
+	@echo "Output:"
+	@cat output
 
 clean:
-	rm -rf __pycache__
+	rm -rf __pycache__ output
