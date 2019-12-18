@@ -7,7 +7,7 @@ Handles the primary functions
 import sys
 import pyspark
 
-sc = pyspark.SparkContext('local', 'nlp_tf_idf')
+sc = pyspark.SparkContext('local[*]', 'nlp_tf_idf')
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
