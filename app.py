@@ -11,7 +11,7 @@ import pyspark
 
 sc = pyspark.SparkContext('local[*]', 'nlp_tf_idf')
 
-gene_or_dis = re.compile('^(dis|gene)_[^ ]+\\1$')
+gene_or_dis = re.compile('^(dis|gene)_[^ ]+_\\1$')
 
 def txt_to_doc(txt):
     splitted = txt.split()
