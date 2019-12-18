@@ -11,13 +11,12 @@ import pyspark
 
 sc = pyspark.SparkContext('local[*]', 'nlp_tf_idf')
 
+gene_or_dis = re.compile('^(dis|gene)_[^ ]+\\1$')
 
 def txt_to_doc(txt):
-    PATTERN1 = re.compile('^dis_.*_dis$')
-    PATTERN2 = re.compile('^gene_.*_gene$')
     splitted = txt.split()
     # return (docid, words)
-    return splitted[0], [i for i in splitted[1:] if (PATTERN1.match(i) or PATTERN2.match(i))]
+    return splitted[0], [w for w in splitted[1:] if gene_or_dis.match(w)]
 
 def doc_to_words(doc):
     words = doc[1]
