@@ -16,6 +16,7 @@ def txt_to_doc(txt):
     PATTERN1 = re.compile('^dis_.*_dis$')
     PATTERN2 = re.compile('^gene_.*_gene$')
     splitted = txt.split()
+    # return (docid, words)
     return splitted[0], [i for i in splitted[1:] if (PATTERN1.match(i) or PATTERN2.match(i))]
 
 def doc_to_words(doc):
@@ -33,6 +34,7 @@ if __name__ == '__main__':
         exit(0)
 
     filename = sys.argv[1]
+    QUERY = "gene_egfr+_gene"
     output = open('output', 'w')
 
     txt = sc.textFile(filename)
@@ -45,8 +47,13 @@ if __name__ == '__main__':
             .reduceByKey(lambda a, b: a + b) # term count per doc
     tf = words_by_doc.map(lambda word: (word[0][2], [(word[0][0], word[1]/word[0][1])])) \
             .reduceByKey(lambda a, b: a + b)
+
+    # k: word, v: (idf, [(docid, tf)])
     tf_idf = tf.map(lambda word: (word[0],
-        (math.log(doc_count / len(word[1]), 10), word[1]))) # k: word, v: (idf, [tf])
-    tf_idf.saveAsTextFile('tf_idf')
+        (math.log(doc_count / len(word[1]), 10), word[1])))
+
+    # k: word, v: [(docid, tf*idf)]
+    tf_idf_merged = tf_idf.map(lambda word: (word[0], [(i[0], word[1][0] * i[1]) for i in word[1][1]]))
+    tf_idf_merged.saveAsTextFile('tf_idf')
 
     output.close()
