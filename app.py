@@ -5,14 +5,18 @@ Handles the primary functions
 """
 
 import sys
-import pyspark
+import re
 import math
+import pyspark
 
 sc = pyspark.SparkContext('local[*]', 'nlp_tf_idf')
 
+
 def txt_to_doc(txt):
+    PATTERN1 = re.compile('^dis_.*_dis$')
+    PATTERN2 = re.compile('^gene_.*_gene$')
     splitted = txt.split()
-    return splitted[0], splitted[1:]
+    return splitted[0], [i for i in splitted[1:] if (PATTERN1.match(i) or PATTERN2.match(i))]
 
 def doc_to_words(doc):
     words = doc[1]
