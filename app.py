@@ -65,7 +65,11 @@ if __name__ == '__main__':
     q_norm = sum(map(lambda x: x ** 2, q[0].values())) ** (1/2)
 
     similartities = tf_idf_merged.map(lambda w: (w[0], sum([q[0][elem] * w[1][elem] for elem in q[0].keys() & w[1].keys()]) / (sum(map(lambda x: x ** 2, w[1].values())) ** (1/2) * q_norm)))
-    similartities.saveAsTextFile('similartities')
-    # DEBUG: print("HERE", q_term)
 
+    sorted_similartities = similartities.sortBy(lambda word: word[1], False)
+    terms = sorted_similartities.take(6)
+
+    output.write(f'\nTop 5 similar to {QUERY}:\n')
+    # query should match itself, so we skip that
+    output.writelines([f'{word} {item}\n' for (word, item) in terms[1:]])
     output.close()
