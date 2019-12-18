@@ -16,8 +16,11 @@ if __name__ == '__main__':
         exit(0)
 
     filename = sys.argv[1]
-    print(f'Reading from file: {filename}')
+    output = open('output', 'w')
+
     txt = sc.textFile(filename)
-    print(f'Lines in text: {txt.count()}')
+    output.write(f'Lines in text: {txt.count()}\n')
     words = txt.flatMap(lambda line: line.split())
-    print(f'Words in text: {words.count()}')
+    output.write(f'Words in text: {words.count()}\n')
+
+    output.close()
