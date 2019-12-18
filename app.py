@@ -56,11 +56,16 @@ if __name__ == '__main__':
         (math.log(doc_count / len(word[1]), 10), word[1])))
 
     # k: word, v: [(docid, tf*idf)]
-    tf_idf_merged = tf_idf.map(lambda word: (word[0], [(i[0], word[1][0] * i[1]) for i in word[1][1]]))
-    tf_idf_merged.saveAsTextFile('tf_idf')
+    tf_idf_merged = tf_idf.map(lambda word: (word[0], {i[0]: word[1][0] * i[1] for i in word[1][1]}))
+    # DEBUG: tf_idf_merged.saveAsTextFile('tf_idf')
 
     sorted_tf_idf = tf_idf_merged.sortByKey()
-    q_term = sorted_tf_idf.lookup(QUERY)[0]
+    q = sorted_tf_idf.lookup(QUERY)
+    q = [i for i in q]
+    q_norm = sum(map(lambda x: x ** 2, q[0].values())) ** (1/2)
+
+    similartities = tf_idf_merged.map(lambda w: (w[0], sum([q[0][elem] * w[1][elem] for elem in q[0].keys() & w[1].keys()]) / (sum(map(lambda x: x ** 2, w[1].values())) ** (1/2) * q_norm)))
+    similartities.saveAsTextFile('similartities')
     # DEBUG: print("HERE", q_term)
 
     output.close()
