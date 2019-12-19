@@ -61,15 +61,16 @@ if __name__ == '__main__':
 
     sorted_tf_idf = tf_idf_merged.sortByKey()
     q = sorted_tf_idf.lookup(QUERY)
+
     q = [i for i in q]
     q_norm = sum(map(lambda x: x ** 2, q[0].values())) ** (1/2)
 
     similartities = tf_idf_merged.map(lambda w: (w[0], sum([q[0][elem] * w[1][elem] for elem in q[0].keys() & w[1].keys()]) / (sum(map(lambda x: x ** 2, w[1].values())) ** (1/2) * q_norm)))
 
-    sorted_similartities = similartities.sortBy(lambda word: word[1], False)
-    terms = sorted_similartities.take(6)
+    # take top 6 from ordered the pair in ascending order
+    terms = similartities.takeOrdered(6, key=lambda word: -word[1])
 
     output.write(f'\nTop 5 similar to {QUERY}:\n')
-    # query should match itself, so we skip that
-    output.writelines([f'{word} {item}\n' for (word, item) in terms[1:]])
+    # query should match itself (~1.0 score), so we skip that
+    output.writelines([f'{word} {item}\n' for (word, item) in terms if word != QUERY])
     output.close()
