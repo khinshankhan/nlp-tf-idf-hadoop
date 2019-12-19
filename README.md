@@ -7,8 +7,13 @@ Khan_Rafi: Khinshan Khan and Shakil Rafi
 ## Requirements
 
 - Apache Spark
+  - have `pyspark` on path
 - Python 3
-
+  - Note 3.8 and above do not work well with spark
+- Python Packages properly in environment:
+  - math
+  - re
+  - sys
 ## Run
 
 One can run the project two ways:
